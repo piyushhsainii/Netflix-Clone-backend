@@ -18,7 +18,7 @@ const registerUser = async(req,res)=>{
         expiresIn: process.env.JWT_EXPIRE
     })
   const options = {
-        expiresIn: new Date(Date.now() * 60 * 60 * 24 *15),
+         MaxAge: new Date(Date.now() + 60 * 60 * 24 * 7 * 1000 ),
         httpOnly:true,
         secure:true,
         sameSite:'none',
@@ -58,7 +58,7 @@ const userLogin =  async (req,res)=>{
     })
 
     const options = {
-        expiresIn: new Date(Date.now() * 60 * 60 * 24 *15),
+        maxAge : new Date(Date.now() + 60 * 60 * 24 * 7 * 1000 ),
         httpOnly:true,
         secure:true,
         sameSite:'none',
@@ -72,13 +72,13 @@ const userLogin =  async (req,res)=>{
         user
     })}
 
-const logout = (req,res)=> {
-        res.status(201).clearCookie("token",null).json({
-            success:true,
-            message:'user has been logged out successfully'
-        })
-
-    }
+const logout = (req,res)=> {  
+        res.clearCookie("token", { httpOnly: true, secure: true, sameSite: "none" }).status(201).json({
+            success: true,
+            message: 'User has been logged out successfully'
+        });
+    };
+    
 
 const updateUser = async(req,res)=>{
     const { name,  email } = req.body

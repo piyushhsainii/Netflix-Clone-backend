@@ -7,8 +7,8 @@ const { isAuthenticated ,isAdmin } = require('../../middleware/authenticate')
 
 router.post('/createList', isAuthenticated , isAdmin ,  createList )
 router.delete('/deleteList/:id', isAuthenticated , isAdmin ,  deleteList )
-router.get('/getList', isAuthenticated , isAdmin ,  getList )
-
+router.get('/getList', isAuthenticated , getList )
+ 
 
 
 module.exports = router

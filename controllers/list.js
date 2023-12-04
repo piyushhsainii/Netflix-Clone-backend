@@ -53,18 +53,33 @@ const deleteList = async(req,res)=>{
 
 //get list 
 
-const getList = async(req,res)=>{
+const getList = async(req,res)=>{ 
    try {
     const type= req.query.type
+    const genre= req.query.genre
     
     let list ;
 
-    if(type){
+    if(type && genre ){ 
         list = await List.aggregate([
             { $sample : {size:10} },
-            { $match : {type : type } }
+            { $match : {type : type , genre:genre}  }
         ])
-    } else {
+       
+    } 
+    else if(type && !genre ){       
+        list = await List.aggregate([
+            { $sample : {size:10} },
+            { $match : {type : type}  }
+        ])   
+    }
+    else if(!type && genre ){       
+        list = await List.aggregate([
+            { $sample : {size:10} },
+            { $match : { genre:genre}  }
+        ])   
+    }
+    else {
         list = await List.aggregate([
             { $sample : {size:10} }
         ])

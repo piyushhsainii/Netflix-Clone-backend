@@ -34,18 +34,24 @@ const createMovie = async(req,res)=>{
 //gives me a random movie from the database
 const getRandomMovie = async(req,res)=>{  
         const type = req.query.type;
-        let  movie;
+        let  movie; 
     
         if(type === "series"){
            movie =  await Movie.aggregate([
            { $match: { isSeries:"true" }},
            { $sample: { size:1 } },
            ])
-        } else 
-        movie = await Movie.aggregate([
-            { $match : { isSeries : "false" } },
-            { $sample : { size:1  } },
-        ])
+        } else if (type==="movie") {
+            movie = await Movie.aggregate([
+                { $match : { isSeries : "false" } },
+                { $sample : { size:1  } },
+            ])
+        } else {
+            movie = await Movie.aggregate([
+                { $sample : { size:1  } },
+            ])
+        }
+       
     
         res.status(200).json({
             success:true,
@@ -78,7 +84,7 @@ const getMovie = async(req,res)=>{
 
     if(!req.params.id){
         return res.status(400).json({
-            success:false,
+            success:false, 
             message:"movie does not exist"
         })
     }

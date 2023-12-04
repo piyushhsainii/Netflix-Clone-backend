@@ -7,7 +7,6 @@ const MovieSchema = new mongoose.Schema({
     ImgTitle : { type : String, required : true },
     ImgSm : { type : String, required : true },
     trailer : { type : String, required : true },
-    genre : { type : String, required : true },
     isSeries : { type : String, default : false },
     genre : { type : String, required : true },
     createdAt: { type: Date, default :  Date.now() }
