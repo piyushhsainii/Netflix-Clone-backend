@@ -23,6 +23,31 @@ const createList = async(req,res)=>{
     }
 
 }
+const updateList = async(req,res)=>{
+
+    const {content , id } = req.body
+    try {       
+        const existingList = await List.findById(id);
+
+                console.log('lol')
+                // Append the new content to the existing list
+                existingList.content.push(content);
+                await existingList.save();
+
+                res.status(200).json({
+                    success: true,
+                    list: existingList,
+                });
+    }
+  
+     catch (error) {
+        res.status(400).json({
+            success:false,
+            message:error
+        })
+    }
+
+}
 
 //api  to delete list
 
@@ -99,4 +124,42 @@ const getList = async(req,res)=>{
 
 }
 
-module.exports = { createList , deleteList , getList }
+
+const deleteListElement = async(req,res)=>{
+    try {
+    const {content , id } = req.body
+
+    const existingList = await List.findById(id);
+
+    if (!existingList) {
+        return res.status(404).json({
+            success: false,
+            message: 'List not found.',
+        });
+    }
+    const indexToRemove = existingList.content.indexOf(content);
+
+    if (indexToRemove !== -1) {
+        existingList.content.splice(indexToRemove, 1);
+        await existingList.save();
+
+        res.status(200).json({
+            success: true,
+            list: existingList,
+        });
+    } else {
+        res.status(404).json({
+            success: false,
+            message: 'Item not found in the list.',
+        });
+    }
+
+    } catch (error) {
+        res.status(400).json({
+            success:false,
+            message:error
+        })
+    }
+}
+
+module.exports = { createList , deleteList , getList , updateList , deleteListElement }
