@@ -7,7 +7,7 @@ const cors = require('cors')
 
 app.use(cors({
     credentials:true,
-    origin:"https://netflix-clone-smoky-one.vercel.app"
+    origin:"https://netflix-clone-piyushhsainii.vercel.app"
 }))
 
 app.use(express.json())     //accepts data in json format
